@@ -6,7 +6,7 @@ import Home from "../pages/home";
 import AddExpenses from "../pages/AddExpenses";
 import ViewExpenses from "../pages/ViewExpenses";
 import Trends from "../pages/Trends/Trends";
-import Profile from "../pages/Profile";
+import ProfilePage from "../pages/ProfilePage.jsx";
 import LinkButton from "./LinkButton/LinkButton";
 import AddExpenseForm from "./AddExpenseForm/AddExpenseForm";
 import ExpensesBar from "./ExpensesBar/ExpensesBar";
@@ -16,6 +16,7 @@ import Login from "./Login/Login.jsx";
 import Register from "./Register/Register.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
+import Profile from "./Profile/Profile.jsx";
 
 
 export {Dashboard,
@@ -35,6 +36,6 @@ export {Dashboard,
     Login,
     Register,
     LoginPage,
-    RegisterPage
-
+    RegisterPage,
+    ProfilePage
 }

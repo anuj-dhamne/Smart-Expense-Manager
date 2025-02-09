@@ -12,7 +12,8 @@ import {
   Profile,
   Test,
   LoginPage,
-  RegisterPage
+  RegisterPage,
+  ProfilePage
 } from './components/index.js'
 
 // TODO: complete router 
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />
+        element: <ProfilePage/>
       },
       {
         path: "under-test",

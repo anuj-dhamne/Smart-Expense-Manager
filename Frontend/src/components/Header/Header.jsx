@@ -1,10 +1,20 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import "./Header.css"
+import axios from "axios"
 
 
 
 function Header() {
+
+
+    const navigate=useNavigate();
+    const logout=async()=>{
+        await axios.post("http://localhost:3000/api/v1/users/logout");
+        alert("User Logout Successfully ! ")
+        navigate("/");
+    }
+    // useEffect(()=>{navigate("/")},[logout]);
     return (
         <div className="nav">
             <div className="navLogo">
@@ -18,6 +28,8 @@ function Header() {
                 <li><Link to="/view-expenses">View Expenses</Link></li>
                 <li><Link to="/trends">Trends</Link></li>
                 <li><Link to="/profile">Profile</Link></li>
+                <li><Link to="/login">Login</Link></li>
+                <button onClick={()=>{logout()}}>Logout</button>
             </ul>
             </div>
             {/* <button className="theme-toggle">Toggle Theme</button> */}

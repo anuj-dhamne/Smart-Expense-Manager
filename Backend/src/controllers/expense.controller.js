@@ -9,17 +9,21 @@ const addExpense = asyncHandler(async (req, res) => {
     // get data from user
     let { title, date, category, amount, description } = req.body;
 
-    // validate date is in correct form or not 
-    if (date) {
-        // Convert from "DD-MM-YYYY" to "YYYY-MM-DD"
-        const [day, month, year] = date.split("-");
-        date = new Date(`${year}-${month}-${day}`);
+    // console.log("Received date from frontend:", date);
 
-        // Check if the date is valid
-        if (isNaN(date)) {
-            throw new ApiError(400, "Invalid date format! Use 'DD-MM-YYYY'.");
-        }
+    // validate date is in correct form or not 
+
+    if (!date) {
+        throw new ApiError(400, "Date is required.");
     }
+    if (typeof date === "string") {
+        // Convert from "YYYY-MM-DD" to a valid Date object
+        date = new Date(date);
+    }
+    if (isNaN(date.getTime())) {
+        throw new ApiError(400, "Invalid date format! Use 'YYYY-MM-DD'.");
+    }
+    
     // which user created it ?
     const user_id = req.user._id;
 
@@ -27,13 +31,13 @@ const addExpense = asyncHandler(async (req, res) => {
     if ([title, category, amount, description].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "All fields are required ! ");
     }
-    
+    // console.log("File received : ",req.files)
     const billPhotoLocalPath = req.files?.bill_photo?.[0]?.path;
     if(!billPhotoLocalPath){
         throw new ApiResponse(400,"Bill photo is not get send ! ");
     }
 
-    const billPhoto=uploadOnCloudinary(billPhotoLocalPath);
+    const billPhoto=await uploadOnCloudinary(billPhotoLocalPath);
      
     // create expense user and upload it on Database
     const expense = await Expense.create({

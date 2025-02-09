@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios"
+import { useNavigate } from "react-router";
+axios.defaults.withCredentials = true;
 
 const Login = () => {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({ username: "", password: "" });
 
   const handleChange = (e) => {
@@ -16,15 +19,23 @@ const Login = () => {
       fd.append("username",formData.username);
       fd.append("password",formData.password);
 
-      const response= await axios.post("http://localhost:3000/api/v1/users/login",formData);
+      const response= await axios.post("http://localhost:3000/api/v1/users/login",formData, 
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+        },
+        {
+          withCredentials:true
+        }
+      );
       // console.log(response)
-      const token=response.data.data.refreshToken;
+      // const token=response.data.data.refreshToken;
       // console.log("Refresh Token : ",token)
 
       // storing refreshToken in localStorage
-      localStorage.setItem("token",token);
-
+      // localStorage.setItem("token",token);
+      console.log("Login Successful:", response.data);
       alert("Used Logged in Successfully !")
+      navigate("/");
   } catch (error) {
       console.log(error.response?.data || "Error in Login");
   }

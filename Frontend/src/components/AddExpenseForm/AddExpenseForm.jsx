@@ -18,25 +18,23 @@ function AddExpenseForm() {
   });
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value,type,files } = event.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type==="file"?files[0]:value,
     }))
   }
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     // getting token from the local storage
     const token =localStorage.getItem("token"); 
-    // console.log("Refresh Token ",token)
-    // console.log("Submit data:", formData);
-    
-    // connecting with server
+
     try {
       const fd=new FormData();
       fd.append("title",formData.title);
       fd.append("category",formData.category);
       fd.append("date",formData.date);
+      fd.append("amount",formData.amount);
       fd.append("bill_photo",formData.bill);
       fd.append("description",formData.description);
 
@@ -105,7 +103,7 @@ function AddExpenseForm() {
 
         <div className="subDiv">
           <label htmlFor="date">Bill : </label>
-          <input type="file" name="bill" id="bill" value={formData.bill} onChange={(e) => handleChange(e)} required />
+          <input type="file" name="bill" id="bill"  onChange={(e) => handleChange(e)} required />
         </div>
 
         <div className="subDiv">
