@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 
-function AddExpenseForm() {
+function UpdateExpense() {
   const navigate=useNavigate();
   const [formData, setFormData] = useState({
     title:"",
-    // category:"",
+    category:"",
     amount:"",
     date:"",
     bill:"",
@@ -32,9 +32,8 @@ function AddExpenseForm() {
     try {
       const fd=new FormData();
       fd.append("title",formData.title);
-      // fd.append("category",formData.category);
+      fd.append("category",formData.category);
       fd.append("date",formData.date);
-      console.log("Date format in Frontend : ",formData.date);
       fd.append("amount",formData.amount);
       fd.append("bill_photo",formData.bill);
       fd.append("description",formData.description);
@@ -126,4 +125,4 @@ function AddExpenseForm() {
   )
 }
 
-export default AddExpenseForm
+export default UpdateExpense

@@ -1,10 +1,18 @@
 import React, { useState } from "react";
+import "./Login.css"
+import { useContext } from "react";
 import axios from "axios"
 import { useNavigate } from "react-router";
 axios.defaults.withCredentials = true;
+import { AuthContext } from "../../context/AuthContext.jsx";
+import {Btn} from "../index.js";
+import { Link } from "react-router";
+
+
 
 const Login = () => {
   const navigate=useNavigate();
+  const { setIsAuthenticated } = useContext(AuthContext);
   const [formData, setFormData] = useState({ username: "", password: "" });
 
   const handleChange = (e) => {
@@ -27,12 +35,8 @@ const Login = () => {
           withCredentials:true
         }
       );
-      // console.log(response)
-      // const token=response.data.data.refreshToken;
-      // console.log("Refresh Token : ",token)
-
-      // storing refreshToken in localStorage
-      // localStorage.setItem("token",token);
+      setIsAuthenticated(true);
+      
       console.log("Login Successful:", response.data);
       alert("Used Logged in Successfully !")
       navigate("/");
@@ -47,8 +51,10 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <input type="text" name="username" placeholder="Username" onChange={handleChange} required />
         <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit">Log In</button>
+        <Btn children="Log in" type="submit"/>
       </form>
+      <br />
+      <Link to="/register">If not a user</Link>
     </div>
   );
 };

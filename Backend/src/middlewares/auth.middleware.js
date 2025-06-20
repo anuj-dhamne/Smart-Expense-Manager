@@ -8,12 +8,8 @@ const verifyJWT=asyncHandler(async (req,res,next)=>{
 
 try {
     const token=req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ","");
-    console.log("Token Received : ",token)
-    // console.log("Using secret:", process.env.ACCESS_TOKEN_SECRET);
-    // const decoded = jwt.decode(token, { complete: true });
-    // console.log("Decoded token:", decoded);
-    // console.log("Raw token:", `"${token}"`);  // Ensure no spaces
-
+    // console.log("Token Received : ",token)
+   
     if(!token){
         throw new ApiError(401,"Unauthorised request !");
     }

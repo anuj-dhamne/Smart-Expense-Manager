@@ -1,8 +1,8 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import { AuthProvider } from './context/AuthContext.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import App from "./App.jsx"
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 import {
   Header,
   AddExpenses,
@@ -24,23 +24,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home />
+        element: <ProtectedRoute><Home/></ProtectedRoute>
       },
       {
         path: "add-expenses",
-        element: <AddExpenses />
+        element: <ProtectedRoute><AddExpenses /></ProtectedRoute>
       },
       {
         path: "view-expenses",
-        element: <ViewExpenses />
+        element: <ProtectedRoute><ViewExpenses /></ProtectedRoute>
       },
       {
         path: "trends",
-        element: <Trends />
+        element: <ProtectedRoute><Trends /></ProtectedRoute>
       },
       {
         path: "profile",
-        element: <ProfilePage/>
+        element: <ProtectedRoute><ProfilePage/></ProtectedRoute>
       },
       {
         path: "under-test",
@@ -59,8 +59,9 @@ const router = createBrowserRouter([
 ])
 
 createRoot(document.getElementById('root')).render(
+  <AuthProvider>
   <RouterProvider router={router}>
     <Header />
   </RouterProvider>
-
+</AuthProvider>
 )

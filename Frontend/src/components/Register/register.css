@@ -1,0 +1,4 @@
+.btns-grp{
+    display: flex;
+    justify-content: space-around;
+}

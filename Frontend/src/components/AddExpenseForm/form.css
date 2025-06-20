@@ -23,9 +23,34 @@ h1, h2, h3, button, .title, .amount {
     box-shadow: 0px 5px 15px rgba(44, 62, 80, 0.1);
 }
 
-
+select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px #edda90;
+    outline: none;
+  }
+  select option:hover{
+    background-color: var(--accent-color);
+  }
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
 .subDiv {
-    margin-bottom: 18px;
+    margin-bottom: 35px;
     display: flex;
     flex-direction: column;
     height: 50px;
@@ -42,11 +67,28 @@ label {
 .btnBox {
     display: flex;
     justify-content: space-around;
+    margin-top: 10px;
 }
 .btn{
     width: 25%;
     text-align: center;
 } 
+textarea {
+    /* width: 100%; */
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    min-height: 20px; /* Starts at 120px height */
+    resize: vertical; 
+}
+textarea:focus{
+    border-color: var(--accent-color);
+    box-shadow: 0 0 8px #edda90;
+    outline: none;
+}
 
     
 

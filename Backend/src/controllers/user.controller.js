@@ -23,7 +23,7 @@ const generateAccessAndRefreshToken=async(userId)=>{
         throw new ApiError(404,"User not exist !");
     }
 }
-
+// implemented
 const userRegister=asyncHandler(async (req,res)=>{
 
     // getting user data
@@ -73,7 +73,7 @@ const userRegister=asyncHandler(async (req,res)=>{
     // return responses
     return res.status(201).json(new ApiResponse(200,createdUser,"User Created Successfully !"));
 })
-
+// implemented
 const loginUser=asyncHandler(async (req,res)=>{
  const {username,password}=req.body;
  if(!username){
@@ -110,7 +110,7 @@ const loginUser=asyncHandler(async (req,res)=>{
  .cookie("refreshToken",refreshToken,options)
  .json(new ApiResponse(201,{user:loggedUser,accessToken,refreshToken},"Loggedin Successfull !"))
 })
-
+// implemented
 const logoutUser=asyncHandler(async(req,res)=>{
     await User.findByIdAndUpdate(
         req.user._id,

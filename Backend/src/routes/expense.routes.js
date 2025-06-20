@@ -1,6 +1,6 @@
 import {Router} from "express"
 import { upload } from "../middlewares/multer.middleware.js";
-import { addExpense, categoryWiseAmount, categoryWiseExpense, getExpenses, updateExpense,getExpendAmount, deleteExpense } from "../controllers/expense.controller.js"
+import { addExpense, categoryWiseAmount, categoryWiseExpense, getExpenses, updateExpense,getExpendAmount, deleteExpense, getMonthlySummary } from "../controllers/expense.controller.js"
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const expenseRoute=Router();
@@ -22,5 +22,6 @@ expenseRoute.route("/categoryWise-amount").get(verifyJWT,categoryWiseAmount);
 expenseRoute.route("/categoryWise-expenses").get(verifyJWT,categoryWiseExpense);
 expenseRoute.route("/expended-amount").get(verifyJWT,getExpendAmount);
 
+expenseRoute.route("/monthly-summary").get(verifyJWT,getMonthlySummary);
 
 export default expenseRoute

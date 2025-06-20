@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios"
+import {Btn} from "../index.js"
+import "./register.css"
+import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 const Register = () => {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -42,6 +47,7 @@ const Register = () => {
         );
         console.log(res.data);
         alert("Used Registeration suceessfully ! ")
+        navigate("/login");
     } catch (error) {
         console.log(error.response?.data || "Error in registration");
     }
@@ -57,11 +63,17 @@ const Register = () => {
         <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
         <input type="file" name="avator" onChange={handleChange} />
         <input type="number" name="budgetAmount" placeholder="Budget Amount" onChange={handleChange} required />
-        <div className="btn-group">
-          <button type="button">Cancel</button>
-          <button type="submit">Register</button>
+        <div className="btns-grp">
+          {/* <button type="button">Cancel</button> */}
+          
+          <Btn children="Reset" type="reset" />
+
+          {/* <button type="submit" >Register</button> */}
+          <Btn children="Submit" type="submit"/>
         </div>
       </form>
+      <br />
+      <Link to="/login">If already a user</Link>
     </div>
   );
 };

@@ -28,8 +28,16 @@
     width: 100px;
 /* padding: 10px; */
 }
-.navElement{
-
+.navElement li{
+  text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+.navElement li:hover{
+  color: var(--accent-color);
 }
 .navElement ul{
 

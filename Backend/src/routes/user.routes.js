@@ -13,6 +13,7 @@ import {
    updateBudget,
    userRegister
          } from "../controllers/user.controller.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const router=Router();
 
@@ -47,4 +48,12 @@ router.route("/update-avator").patch(verifyJWT, upload.single("avator"), updateA
 
 // update budget route
 router.route("/update-budget").patch(verifyJWT, updateBudget)
+
+// for authentication , is user logged in or not !
+router.route("/dashboard").get(verifyJWT,(req, res) => {
+    if(!req.user){
+        return res.json(new ApiResponse(400,req.user,"User unauthorised ! "))
+    }
+    res.json(new ApiResponse(200,req.user,"User is logged In !"));
+});
 export default router

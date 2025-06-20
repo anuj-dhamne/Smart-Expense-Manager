@@ -31,6 +31,7 @@ function Profile() {
           <h2 className="username">{user.username}</h2>
           <p className="fullname">{user.name}</p>
           <p className="email">{user.email}</p>
+          <p className='email'>{user.budgetAmount}</p>
         </div>
   
         {/* Buttons */}
