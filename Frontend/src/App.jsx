@@ -1,77 +1,28 @@
-// src/AppRoutes.jsx
-import { Routes, Route } from "react-router-dom";
-import { Toaster } from 'react-hot-toast';
-import Dashboard from "./pages/Dashboard.jsx";
-import Expenses from "./pages/Expenses.jsx";
-import Recurrings from "./pages/Recurrings.jsx";
-import Profile from "./pages/Profile";
-import Login from "./pages/Login.jsx";
-import Home from "./pages/Home.jsx";
-import Sidebar from "./components/Sidebar.jsx";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Signup from "./pages/Signup.jsx";
+// src/App.jsx
+import { useEffect } from "react";
+import AppRoutes from "./AppRoutes.jsx";
+import useAuthStore from "./store/useAuthStore.js";
 
-const Layout = ({ children }) => (
-  <div className="flex">
-    <Sidebar />
-    <div className="flex-1 p-6 bg-gray-50 min-h-screen">{children}</div>
-  </div>
-);
+console.log("App.jsx component loaded"); 
 
-const AppRoutes = () => {
-  return (
-    <>
-    <Toaster position="top-center" reverseOrder={false} />
-    <Routes>
-      {/* Public Route */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Signup/>} />
+const App = () => {
+  const fetchUserOnLoad = useAuthStore((state) => state.fetchUserOnLoad);
+  const authLoading = useAuthStore((state) => state.authLoading);
 
-      {/* Protected Routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/expenses"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Expenses />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      {/* <Route
-        path="/recurrings"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Recurrings />
-            </Layout>
-          </ProtectedRoute>
-        }
-      /> */}
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Profile />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
-    </>
-  );
+  useEffect(() => {
+    console.log("I am in App.jsx useEffect !");
+    fetchUserOnLoad();
+  }, []);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-lg text-gray-700">
+        Checking login status...
+      </div>
+    );
+  }
+
+  return <AppRoutes />;
 };
 
-export default AppRoutes;
+export default App;
