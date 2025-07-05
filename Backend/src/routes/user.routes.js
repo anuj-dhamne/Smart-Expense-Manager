@@ -20,7 +20,7 @@ const router=Router();
 //  register route
 router.route("/register").post(
     upload.fields([{
-        name:"avator",
+        name:"avatar",
         maxCount:1
     }]),
     userRegister);
@@ -44,7 +44,7 @@ router.route("/current-user").get(verifyJWT, getCurrentUser)
 router.route("/update-details").patch(verifyJWT, updateAccountDetails)
 
 // update avator route
-router.route("/update-avator").patch(verifyJWT, upload.single("avator"), updateAvator);
+router.route("/update-avatar").patch(verifyJWT, upload.single("avatar"), updateAvator);
 
 // update budget route
 router.route("/update-budget").patch(verifyJWT, updateBudget)

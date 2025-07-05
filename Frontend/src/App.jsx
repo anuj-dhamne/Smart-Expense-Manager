@@ -1,19 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import Card from './components/Card/Card'
-import Header from './components/Header/Header'
+// src/AppRoutes.jsx
+import { Routes, Route } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
+import Dashboard from "./pages/Dashboard.jsx";
+import Expenses from "./pages/Expenses.jsx";
+import Recurrings from "./pages/Recurrings.jsx";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login.jsx";
+import Home from "./pages/Home.jsx";
+import Sidebar from "./components/Sidebar.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Signup from "./pages/Signup.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+const Layout = ({ children }) => (
+  <div className="flex">
+    <Sidebar />
+    <div className="flex-1 p-6 bg-gray-50 min-h-screen">{children}</div>
+  </div>
+);
 
+const AppRoutes = () => {
   return (
     <>
-      {/* <Card children="Total Expenses" amount={123}/>
-      <Card children="Budget" amount={0}/>
-      <h1>Anuj</h1> */}
-    </>
-  )
-}
+    <Toaster position="top-center" reverseOrder={false} />
+    <Routes>
+      {/* Public Route */}
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Signup/>} />
 
-export default App
+      {/* Protected Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/expenses"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Expenses />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      {/* <Route
+        path="/recurrings"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Recurrings />
+            </Layout>
+          </ProtectedRoute>
+        }
+      /> */}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Profile />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+    </>
+  );
+};
+
+export default AppRoutes;

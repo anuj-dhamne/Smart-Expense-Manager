@@ -11,7 +11,7 @@ try {
     // console.log("Token Received : ",token)
    
     if(!token){
-        throw new ApiError(401,"Unauthorised request !");
+        return res.status(401).json("Unauthorised request !");
     }
     
     const decodedToken =jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)

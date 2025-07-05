@@ -27,30 +27,26 @@ const generateAccessAndRefreshToken=async(userId)=>{
 const userRegister=asyncHandler(async (req,res)=>{
 
     // getting user data
-    const {name,username,email,password,budgetAmount,expendAmount}=req.body;
+    const {name,username,email,password,budgetAmount}=req.body;
 
-    // validate data
-    if([name,username,email,password,budgetAmount,expendAmount].some((field)=>field?.trim()==="")){
-        throw new ApiError(400,"Fields are required")
-    }
-
-    // checking user already exists or not
     const existedUser=await User.findOne({
         $or:[{username},{email}]
     })
     if(existedUser){
-        throw new ApiError(400,"username alraedy exists with this email or username");
+        return res.status(404).json({msg:"username or email already exist ! "});
     }
 
     // Uploading profile picture
-    const avatorLocalPath=req.files?.avator?.[0]?.path;
-    if(!avatorLocalPath)
-        {throw new ApiError(400,"Avator file is required");}
+  let avatarUrl = "";
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
 
-    // upload on cloudinary 
-    const avator=await uploadOnCloudinary(avatorLocalPath);
-
-    if(!avator){throw new ApiError(400,"Avator file required")};
+  if (avatarLocalPath) {
+    const avatarUpload = await uploadOnCloudinary(avatarLocalPath);
+    if (!avatarUpload) {
+      return res.json.status(400).json({msg: "Failed to upload avatar."});
+    }
+    avatarUrl = avatarUpload.url;
+  }
 
     // creating user Object and upload entry in DB
     const user=await User.create({
@@ -58,9 +54,9 @@ const userRegister=asyncHandler(async (req,res)=>{
         email,
         username:username.toLowerCase(),
         password,
-        avator:avator.url,
         budgetAmount,
-        expendAmount,
+        expendAmount:0,
+        ...(avatarUrl && { avatar: avatarUrl })
     })
     // removing password and refreshtoken fro sending response
 
@@ -68,7 +64,7 @@ const userRegister=asyncHandler(async (req,res)=>{
 
     // check for user creation 
     if(!createdUser){
-        throw new ApiError(500,"Something went wrong while regestring the user !")
+        return res.status(500).json({msg:"Server is Down ! "});
     }
     // return responses
     return res.status(201).json(new ApiResponse(200,createdUser,"User Created Successfully !"));
@@ -77,18 +73,18 @@ const userRegister=asyncHandler(async (req,res)=>{
 const loginUser=asyncHandler(async (req,res)=>{
  const {username,password}=req.body;
  if(!username){
-    throw new ApiError(400,"Username required ! ")
+    return res.status(400).json({msg:"Username required ! "})
  }
  const user=await User.findOne({
     username
  })
  if(!user){
-    throw new ApiError(400,"No Such user with above username exists !")
+    return res.status(404).json("No Such user with above username exists !")
  }
  const isPassword=await user.isPasswordCorrect(password);
 
  if(!isPassword){
-    throw new ApiError(400,"Password is incorrect ! ");
+    return res.status(400).json("Password is incorrect ! ");
  }
 //  TODO: token to bo added
 
@@ -169,17 +165,21 @@ const updateBudget=asyncHandler(async(req,res)=>{
 })
 
 const updateAccountDetails=asyncHandler(async(req,res)=>{
-    const {name,email}=req.body;
+    const {name,email,isMailAllow,budgetSurpassAlert,budgetAmount}=req.body;
 
-  if(!name ||!email){
-    throw new ApiError(400,"All fields are required ! ");
-  }
+    console.log("data for profile update : ",name," ",email," ",budgetSurpassAlert," ",budgetAmount," ",isMailAllow);
+
+    // console.log(" Req body : ",req.body);
+    // const isMailExist =await User.findOne({email});
+    // if(isMailExist){
+    //   return res.status(400).json("Email already exists ");
+    // }
 
   const user =await User.findByIdAndUpdate(
     req.user._id,
     {
       $set:{
-        name,email
+        name,email,isMailAllow,budgetAmount,budgetSurpassAlert
       }
     },
     {
@@ -197,26 +197,26 @@ const updateAccountDetails=asyncHandler(async(req,res)=>{
 })
 
 const updateAvator=asyncHandler(async(req,res)=>{
-    const avatorLocalPath=req.file?.path;
-  if(!avatorLocalPath){
-    throw new ApiError(400,"Avator file required ! ")
+    const avatarLocalPath=req.file?.path;
+  if(!avatarLocalPath){
+    return res.status(400).json("Avator file required ! ")
   }
-  const avator=await uploadOnCloudinary(avatorLocalPath);
+  const avatar=await uploadOnCloudinary(avatarLocalPath);
 
-  if(!avator.url){
-    throw new ApiError(400,"Error required for uploading on avator ! ")
+  if(!avatar.url){
+   return res.status(400).json("Error required for uploading on avator ! ")
   }
 
   const user=await User.findByIdAndUpdate(
     req.user?._id,
     {
-      $set:{avator:avator.url}
+      $set:{avatar:avatar.url}
     },
     {
       new:true,
     }
   ).select("-password")
-
+console.log("avatar update ");
   return res.status(200).json(new ApiResponse(200,user,"Avator upload Successfully "));
 })
 
@@ -232,13 +232,12 @@ const getCurrentUser=asyncHandler(async (req,res)=>{
     const isPasswordCorrect=await user.isPasswordCorrect(oldPassword);
   
     if(!isPasswordCorrect){
-      throw new ApiError(401,"The password is Incorrect ! ");
+      return res.status(401).json("The password is Incorrect ! ");
     }
     user.password=newPassword;
    await user.save({validateBeforeSave :false});
   
   return res.status(200).json(new ApiResponse (200,{},"Password Change Successfully ! "))
-    
   })
 
   const refreshAccessToken = asyncHandler(async (req,res)=>{
@@ -279,12 +278,6 @@ const getCurrentUser=asyncHandler(async (req,res)=>{
      throw new ApiError(401,error?.message || "Invalid refresh token ! ");
     }
  })
-
-//  TODO : complete this function 
-
-//  const editExpendamount=asyncHandler((req,res)=>{
-
-//  })
 
 export {userRegister,
     loginUser,

@@ -14,7 +14,6 @@ const userSchema=new mongoose.Schema({
     name:{
         type:String,
         required:true,
-        lowercase:true,
         trim:true,
     },
     email:{
@@ -24,9 +23,8 @@ const userSchema=new mongoose.Schema({
         unique:true,
         trim:true
     },
-    avator:{
+    avatar:{
         type:String,
-        required:true
     },
     password:{
         type:String,
@@ -41,6 +39,14 @@ const userSchema=new mongoose.Schema({
     },
     refreshToken:{
         type:String,
+    },
+    isMailAllow:{
+        type:Boolean,
+        default:true,
+    },
+    budgetSurpassAlert:{
+        type:Boolean,
+        default:true
     }
 
 },{timestamps:true});

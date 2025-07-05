@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function predictCategory(expense) {
-    const cleanExpense = expense.trim().replace(/[\n\r]+/g, ' ');
+const cleanExpense = expense.trim().replace(/[\n\r]+/g, ' ');
 const prompt = `
 You are an AI assistant for a Smart Expenses Manager app.
 Classify the given expense into ONLY one of the following categories:

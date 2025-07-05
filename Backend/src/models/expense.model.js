@@ -4,10 +4,8 @@ const expenseSchema = new mongoose.Schema(
     {
         title:{
             type:String,
-            lowercase:true,
             required:true,
             trim:true,
-            // unique:true,
         },
         owner:{
             type:String,
